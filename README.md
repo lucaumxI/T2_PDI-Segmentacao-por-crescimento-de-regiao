@@ -14,12 +14,12 @@ o vizinho é adicionado ao conjunto.
 ## Dicas de implementação:
 1. A cada vizinho adicionado, a borda, média e desvio padrão são atualizados. Para não precisar iterar entre todos os pixeis do conjunto para atualizar a média e desvio padrão, podemos usar essas fórmulas:
 
-$$
-\begin{aligned}
-\mu_{i+1}&=\frac{N\mu_{i}+I_p}{N+1}\\
-\sigma_{i+1}&=\sqrt{\frac{(\sigma_i^2+\mu_i^2)N+I_p^2}{N+1}-\mu_{i+1}^2}
-\end{aligned}
-$$
+   $$
+   \begin{aligned}
+   \mu_{i+1}&=\frac{N\mu_{i}+I_p}{N+1}\\
+   \sigma_{i+1}&=\sqrt{\frac{(\sigma_i^2+\mu_i^2)N+I_p^2}{N+1}-\mu_{i+1}^2}
+   \end{aligned}
+   $$
    onde:
 - $\mu_{i+1}$: média atualizada após adicionar o novo pixel ao conjunto
 - $N$: quantidade de pixeis no conjunto
