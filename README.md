@@ -13,6 +13,7 @@ o vizinho é adicionado ao conjunto.
 
 ## Dicas de implementação:
 1. A cada vizinho adicionado, a borda, média e desvio padrão são atualizados. Para não precisar iterar entre todos os pixeis do conjunto para atualizar a média e desvio padrão, podemos usar essas fórmulas:
+
 $$
 \begin{aligned}
 \mu_{i+1}&=\frac{N\mu_{i}+I_p}{N+1}\\
