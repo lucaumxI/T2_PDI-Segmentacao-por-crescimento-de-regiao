@@ -20,7 +20,7 @@ $$
 \sigma_{i+1}&=\sqrt{\frac{(\sigma_i^2+\mu_i^2)N+I_p^2}{N+1}-\mu_{i+1}^2}
 \end{aligned}
 $$
-onde:
+   onde:
 - $\mu_{i+1}$: média atualizada após adicionar o novo pixel ao conjunto
 - $N$: quantidade de pixeis no conjunto
 - $I_p$: intensidade do novo pixel adicionado
