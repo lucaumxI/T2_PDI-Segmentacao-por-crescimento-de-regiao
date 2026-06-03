@@ -25,10 +25,7 @@ def segmentacao(imagem: np.ndarray, regiaoInicial: list[tuple[int, int]], f: flo
             if mu - (f * sigma) < intensidade < mu + (f * sigma):
                 novos_pixels_regiao.add((bx, by))
 
-                vizinhos = [(bx+1, by), (bx-1, by), (bx, by+1), (bx, by-1)]
-                for nx, ny in vizinhos:
-                    if 0 <= nx < linhas and 0 <= ny < colunas:
-                        novos_pixels_borda.add((nx, ny))
+                
 
         # me deu preguiça de terminar, depois eu fuço mais
 
