@@ -35,9 +35,25 @@ def segmentacao(imagem: np.ndarray, regiaoInicial: list[tuple[int, int]], f: flo
 
 # def nome_da_funcao(parametro: set[tuple[int, int]]) -> set[tuple[int, int]]:
 
-def defBorda(regiao: set[tuple[int, int]] , borda: set[tuple[int, int]], imagem: np.ndarray) -> set[tuple[int, int]]:
-    # blablabla implementa como seta a borda
+def defBorda(regiao: set[tuple[int, int]], borda: set[tuple[int, int]], imagem: np.ndarray) -> set[tuple[int, int]]:
+    # Obter as dimensões da imagem
+    altura, largura = imagem.shape[:2]
+    borda.clear()
+
+    # Deslocamento para os 4 vizinhos (cima, baixo, esquerda, direita)
+    vizinhos_4 = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+
+    for rx, ry in regiao:
+        for dx, dy in vizinhos_4:
+            nx, ny = rx + dx, ry + dy
+            # Verificar se o vizinho está dentro dos limites da imagem e não pertence à região
+            if 0 <= nx < altura and 0 <= ny < largura and (nx, ny) not in regiao:
+                borda.add((nx, ny))
+
+    
     return borda
+
+
 def main():
     caminho = "CAMINHO_IMAGEM"
     imagem = np.array(Image.open(caminho))
