@@ -12,25 +12,25 @@ def segmentacao(imagem: np.ndarray, regiaoInicial: list[tuple[int, int]], f: flo
     # Definicao do conjunto borda
     defBorda(regiao, borda, imagem)
 
-    valores_regiao = [imagem[rx, ry] for rx, ry in regiao]
-    mu = np.mean(valores_regiao)
+    valores_regiao = [imagem[rx, ry] for rx, ry in regiao]  # Intensidades da região inicial
+    mu = np.mean(valores_regiao)                            # média e desvio padrão da região inicial
     sigma = np.std(valores_regiao) if len(valores_regiao) > 1 else 0
 
     
-    houve_crescimento = True
+    houve_crescimento = True    # flag para condição de parada
     while houve_crescimento:
         houve_crescimento = False
-        novos_pixels_regiao = set()
-        novos_pixels_borda = set()
+        novos_pixels_regiao = set() # conjunto para salvar a borda que será adicionada a região
+        novos_pixels_borda = set()  # conjunto para salvar a nova borda após adicionar a região (n~]ao sei se vai precisar disso, sepa não)
 
         for bx, by in borda:
             intensidade = imagem[bx, by]
             if mu - (f * sigma) < intensidade < mu + (f * sigma):
                 novos_pixels_regiao.add((bx, by))
-        if novos_pixels_regiao:
+        if novos_pixels_regiao: # verifica se o conjunto não é nulo
             houve_crescimento = True
             
-            # atualiza media e desvio sem percorrer toda a região dnv
+            # atualiza media e desvio
             for px, py in novos_pixels_regiao:
                 intensidade = imagem[px, py]
                 novo_mu = atualizar_media(mu, N, intensidade)
