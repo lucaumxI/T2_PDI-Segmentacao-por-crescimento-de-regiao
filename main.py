@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import matplotlib.pyplot as plt
 from PIL import Image
 from pathlib import Path
 
@@ -84,6 +85,28 @@ def defBorda(regiao: set[tuple[int, int]], borda: set[tuple[int, int]], imagem: 
     
     return borda
 
+def visualizar_segmentacao(imagem: np.ndarray, regiao: set[tuple[int, int]]) -> None:
+    # Cria copia da imagem para não modificar a original
+    imagem_resultado = imagem.copy().astype(np.uint16)
+ 
+    # Inverte a intensidade apenas dos pixels da região segmentada
+    for rx, ry in regiao:
+        imagem_resultado[rx, ry] = 255 - imagem_resultado[rx, ry]
+ 
+    imagem_resultado = imagem_resultado.astype(np.uint8)
+ 
+    fig, axes = plt.subplots(1, 2, figsize=(10, 5))
+ 
+    axes[0].imshow(imagem, cmap='gray', vmin=0, vmax=255)
+    axes[0].set_title("Imagem Original")
+    axes[0].axis('off')
+ 
+    axes[1].imshow(imagem_resultado, cmap='gray', vmin=0, vmax=255)
+    axes[1].set_title("Região Segmentada (intensidade invertida)")
+    axes[1].axis('off')
+ 
+    plt.tight_layout()
+    plt.show()
 
 def main():
 
@@ -105,10 +128,11 @@ def main():
     resultado = segmentacao(imagem, regiaoInicial, 1.0)
 
     print(resultado)
+    visualizar_segmentacao(imagem, resultado)
    
    #isso aqui embaixo é teste pra quando for usar img de verdade
-    caminho = "CAMINHO_IMAGEM"
-    imagem = np.array(Image.open(caminho))
+    #caminho = "CAMINHO_IMAGEM"
+    #imagem = np.array(Image.open(caminho))
 
     #segmentacao(imagem)
 if __name__ == "__main__":
