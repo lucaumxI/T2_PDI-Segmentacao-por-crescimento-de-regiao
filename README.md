@@ -1,31 +1,39 @@
-# T2 PDI: Segmentacao por crescimento de regiao
+# Segmentação de Imagens por Crescimento de Região (*Region Growing*)
 
-O que precisamos fazer basicamente é pegar um conjunto de pixeis (inicialmente um pixel) de uma imagem, analisar os vizinhos imediatos (os 4 do lado, sem diagonais) da borda do conjuntoo, e, caso os vizinhos cumpram essa restrição:
-$$
-\mu -f \cdot \sigma < p < \mu +f \cdot \sigma
-$$
-onde:
-- $\mu$: média da intensidade dos pixeis do conjunto
-- $\sigma$: desvio padrão da intensidade dos pixeis do conjunto
-- $f$: hiperparametro
+Este projeto implementa um algoritmo de segmentação de imagens baseado na técnica de Crescimento de Região (*Region Growing*). O script identifica e agrupa pixels contíguos que compartilham características de intensidade similares, destacando a região resultante.
 
-o vizinho é adicionado ao conjunto.
+## Como o Algoritmo Funciona
 
-## Dicas de implementação:
-1. A cada vizinho adicionado, a borda, média e desvio padrão são atualizados. Para não precisar iterar entre todos os pixeis do conjunto para atualizar a média e desvio padrão, podemos usar essas fórmulas:
+O processo de segmentação ocorre nas seguintes etapas:
 
-$$
-\begin{aligned}
-\mu_{i+1}&=\frac{N\mu_{i}+I_p}{N+1}\\
-\sigma_{i+1}&=\sqrt{\frac{(\sigma_i^2+\mu_i^2)N+I_p^2}{N+1}-\mu_{i+1}^2}
-\end{aligned}
-$$
+1.  **Semente Aleatória:** O algoritmo escolhe um pixel aleatório da imagem e seleciona seus 4 vizinhos diretos (cima, baixo, esquerda, direita) para formar a região inicial.
+2.  **Critério de Inclusão:** Para cada pixel na borda da região atual, verifica-se se a sua intensidade ($I_p$) está dentro do intervalo de aceitação baseado na média ($\mu$) e no desvio padrão ($\sigma$) da região:
+    $$\mu - (f \times \sigma) \leq I_p \leq \mu + (f \times \sigma)$$
+    Onde $f$ é um hiperparâmetro de tolerância (definido como 2.5 no código).
+3.  **Atualização Dinâmica:** Sempre que novos pixels são adicionados à região, a média e o desvio padrão são recalculados dinamicamente utilizando fórmulas de passo único, otimizando o desempenho do algoritmo.
+4.  **Convergência:** O algoritmo continua expandindo a borda até que nenhum novo pixel satisfaça o critério de inclusão.
+5.  **Visualização:** O resultado é exibido lado a lado com a imagem original, utilizando uma máscara de cor vermelha para destacar a região segmentada.
 
-onde:
-- $\mu_{i+1}$: média atualizada após adicionar o novo pixel ao conjunto
-- $N$: quantidade de pixeis no conjunto
-- $I_p$: intensidade do novo pixel adicionado
-- $\sigma_{i+1}$: desvio padrão após adicionar o novo pixel ao conjunto
+## Pré-requisitos
 
+Para executar o script, é necessário ter o Python instalado junto com as seguintes bibliotecas de processamento e visualização:
 
-2. Trabalhar com duas listas, uma para armazenar a borda do conjunto ($B$) e outra para armazenar os pixeis do conjunto($R$). Os vizinhos da lista $B$ são os que serão analisados e adicionados ou não ao conjunto $R$, após adicionar os vizinhos, é preciso analisar quais pixeis serão adicionados ou retirados da lista $B$ e, obviamente, $R \supset B$.
+```bash
+pip install numpy matplotlib Pillow
+```
+
+## Estrutura do Projeto
+
+*   `main.py` (ou o nome do seu script): Contém a lógica principal do algoritmo e as funções de cálculo matemático.
+*   `cameraman.tiff`: Imagem de teste. O código espera encontrar este arquivo no mesmo diretório de execução por padrão.
+
+## Como Executar
+
+1.  Certifique-se de que possui uma imagem válida (por padrão o script procura por `cameraman.tiff`) no diretório do projeto. Caso queira testar com outra imagem, altere a variável `caminho` na função `main()`.
+2.  Execute o script:
+
+```bash
+python main.py
+```
+
+O terminal exibirá as dimensões da imagem, as coordenadas da semente aleatória escolhida e o número total de pixels da região segmentada. Em seguida, uma janela do `matplotlib` será aberta exibindo a imagem original e a segmentação finalizada.
